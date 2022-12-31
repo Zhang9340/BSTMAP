@@ -114,8 +114,68 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V>{
 
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+      if(key == null)  throw  new IllegalArgumentException("The key is null");
+      if(containsKey(key)){
+         V res= get(key);
 
+         root =remove(root, key);
+
+         return res;
+
+      }
+      return null;
+
+    }
+    private EntryNode remove(EntryNode node , K key){
+        int cmd = key.compareTo(node.key);
+        if(cmd<0){
+
+             node.left= remove(node.left, key);
+
+        } else if (cmd> 0) {
+
+              node.right=remove(node.right, key);
+        }else {
+            // if the node has no children deleted
+            // if the node has one child  delete the node and connect the node
+            if(node.left==null) {
+                size--;
+                return node.right;
+
+            }
+            if(node.right == null){
+                size--;
+                return node.left;
+            }
+
+            // if the node has left and right node tree, we will take the biggest node in the left tree as new root
+            //or use the smallest node in the right tree as new root;
+
+            EntryNode rightmax= min(root.right);
+
+             node.right=deleteMin(root.right);
+             rightmax.left = node.left;
+             rightmax.right = node.right;
+             node =rightmax;
+
+        }
+        return node;
+
+    }
+    public EntryNode min(EntryNode root){
+        if(root.left== null) return root;
+        return min(root.left);
+
+    }
+    public EntryNode deleteMin(EntryNode root){
+       if(root.left==null) {
+           size--;
+           root= root.right;
+           return root;
+       }
+
+       root.left =deleteMin(root.left);
+       return root;
     }
 
     @Override
