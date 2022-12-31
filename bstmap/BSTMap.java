@@ -39,13 +39,24 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V>{
 
     @Override
     public boolean containsKey(K key) {
-        return false;
+        return get(key, root) != null;
     }
 
     @Override
     public V get(K key) {
-        return null;
+        if(key==null) throw  new IllegalArgumentException("The  Input key is null");
+        return  get(key, root);
     }
+
+    private  V get(K key, EntryNode node){
+        if(node== null ) return null;
+        int cmd = key.compareTo(node.key);
+        if(cmd < 0)  return  get(key, node.left);
+        else if(cmd> 0) return  get(key, node.right);
+        else  return  node.value;
+
+    }
+
 
 
 
