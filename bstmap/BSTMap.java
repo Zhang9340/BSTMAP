@@ -34,12 +34,23 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V>{
     }
     @Override
     public void clear() {
-
+          size=0;
+          root=null;
     }
 
     @Override
     public boolean containsKey(K key) {
-        return get(key, root) != null;
+       if(key==null ) throw  new IllegalArgumentException("The Input key is null");
+       return  containsKey(root,key);
+    }
+    private  boolean containsKey(EntryNode node, K key){
+        if(node== null ) return false;
+        int cmd = key.compareTo(node.key);
+        if(cmd < 0)  return  containsKey(node.left,key);
+        else if(cmd> 0) return  containsKey(node.right,key);
+        else  return  true;
+
+
     }
 
     @Override
@@ -62,7 +73,7 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V>{
 
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
 
@@ -70,8 +81,10 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V>{
 
     @Override
     public void put(K key, V value) {
-        if(key== null || value==null) throw new IllegalArgumentException("Input key or value is null");
+        if(key== null ) throw new IllegalArgumentException("Input key or value is null");
+
         if (root==null){
+            size++;
             root= new EntryNode(key,value);
 
         }else {
@@ -81,7 +94,10 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V>{
 
     }
     private EntryNode put(EntryNode node , K key, V value){
-          if(node == null) return new EntryNode(key, value);
+          if(node == null) {
+              size++;
+              return new EntryNode(key, value);
+          }
           int cmd = key.compareTo(node.key);
           if(cmd<0) node.left= put(node.left, key, value);
           else if (cmd>0)   node .right=put(node.right, key, value);
@@ -93,23 +109,25 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V>{
 
     @Override
     public Set keySet() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public V remove(K key) {
-        return null;
+        throw new UnsupportedOperationException();
+
     }
 
     @Override
     public V remove(K key, V value) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
 
 
     @Override
     public Iterator iterator() {
-        return null;
+        throw new UnsupportedOperationException();
+
     }
 }
